@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 
-import { createStage, checkCollision } from '../gameHelpers';
+import { createStage, checkCollision } from '../gameHelpres';
 
-// Styled Components
-import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
 
-// Custom Hooks
+import { StyledTetrisWrapper, StyledTetris, StyledAdditionalButtons } from './styles/StyledTetris';
+
+
 import { usePlayer } from '../hooks/usePlayer';
 import { useStage } from '../hooks/useStage';
 
-// Components
 import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
+import ScoreButton from './ScoreButton';
+import SettingsButton from './SettingsButton';
 
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
   const [player, updatePlayerPos, resetPlayer] = usePlayer();
-  const [stage, setStage] = useStage(player, resetPlayer);
+  const [stage, setStage] = useStage(player);
 
   console.log('re-render');
 
@@ -31,7 +32,6 @@ const Tetris = () => {
 
   const startGame = () => {
     console.log("test")
-    // Reset everything
     setStage(createStage());
     resetPlayer();
     setGameOver(false);
@@ -41,13 +41,12 @@ const Tetris = () => {
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false })
     } else {
-      // Game Over
       if (player.pos.y < 1) {
-        console.log("GAME OVER!!!");
+        console.log('Game over');
         setGameOver(true);
         setDropTime(null);
       }
-      updatePlayerPos({ x: 0, y: 0, collided: true });
+      updatePlayerPos({ x: 0, y: 0, collided: true})
     }
   }
 
@@ -75,12 +74,16 @@ const Tetris = () => {
           {gameOver ? (
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
-            <div>
-              <Display text="Score" />
-              <Display text="Rows" />
-              <Display text="Level" />
-            </div>
-          )}
+              <div>
+                <Display text="Score" />
+                <Display text="Rows" />
+                <Display text="Level" />
+              </div>
+            )}
+          <StyledAdditionalButtons>
+            <ScoreButton />
+            <SettingsButton />
+          </StyledAdditionalButtons>
           <StartButton callback={startGame} />
         </aside>
       </StyledTetris>
