@@ -13,12 +13,15 @@ import { useStage } from '../hooks/useStage';
 import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
+import ScoreButton from './ScoreButton';
+import SettingsButton from './SettingsButton';
+
 
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
-  const [player, updatePlayerPos, resetPlayer] = usePlayer();
+  const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage] = useStage(player, resetPlayer);
 
   console.log('re-render');
@@ -63,6 +66,8 @@ const Tetris = () => {
         movePlayer(1);
       } else if (keyCode === 40) {
         dropPlayer();
+      } else if (keyCode === 38) {
+        playerRotate(stage, 1);
       }
     }
   }
