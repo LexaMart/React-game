@@ -18,8 +18,8 @@ const StyledStartButton = styled.button`
   cursor: pointer;
 `;
 
-const StartButton = ({ callback }) => (
-  <StyledStartButton onClick={callback}>Start Game</StyledStartButton>
+const StartButton = ({ callback, gameStarted }) => (
+  <StyledStartButton onClick={callback}>{gameStarted ? 'RESTART' : 'START'}</StyledStartButton>
 );
 
 export default StartButton;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { localDropTime } from '../localStorage';
-import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
+import { StyledTetrisWrapper, StyledTetris, StyledAdditionalButtons } from './styles/StyledTetris';
 
 // Custom Hooks
 import { useInterval } from '../hooks/useInterval';
@@ -16,6 +16,7 @@ import Display from './Display';
 import StartButton from './StartButton';
 import ScoreButton from './ScoreButton';
 import SettingsButton from './SettingsButton';
+import Settings from './Settings';
 
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
@@ -26,6 +27,9 @@ const Tetris = () => {
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
     rowsCleared
   );
+  const [activeSettings, setActiveSettings] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
+  const [isMusic, setIsMusic] = useState(true);
 
 
   const movePlayer = dir => {
@@ -42,9 +46,14 @@ const Tetris = () => {
     }
   };
 
+  const showSettings = () => {
+    setActiveSettings(!activeSettings);
+  }
+
   const startGame = () => {
     setStage(createStage());
     setDropTime(localDropTime());
+    setIsStarted(true);
     resetPlayer();
     setScore(0);
     setLevel(0);
@@ -101,19 +110,25 @@ const Tetris = () => {
       onKeyDown={e => move(e)}
       onKeyUp={keyUp}
     >
+      <Settings active={activeSettings} setActive={setActiveSettings} isMusic={isMusic} setIsMusic={setIsMusic} difficulty={localDropTime()} />
       <StyledTetris>
         <Stage stage={stage} />
         <aside>
           {gameOver ? (
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
-            <div>
-              <Display text={`Score: ${score}`} />
-              <Display text={`rows: ${rows}`} />
-              <Display text={`Level: ${level}`} />
-            </div>
-          )}
-          <StartButton callback={startGame} />
+              <div>
+                <Display text={`Score: ${score}`} />
+                <Display text={`rows: ${rows}`} />
+                <Display text={`Level: ${level}`} />
+              </div>
+            )}
+          <StyledAdditionalButtons>
+            <ScoreButton />
+            <SettingsButton callback={showSettings} />
+          </StyledAdditionalButtons>
+
+          <StartButton callback={startGame} gameStarted={isStarted} />
         </aside>
       </StyledTetris>
     </StyledTetrisWrapper>
