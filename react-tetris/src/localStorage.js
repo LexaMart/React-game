@@ -10,3 +10,9 @@ export const localDropTime = (customInterval) => {
     return 1000;
   }
 }
+
+export const localScore = (newScore) => {
+  let ScoreArr = [
+    
+  ]
+}
