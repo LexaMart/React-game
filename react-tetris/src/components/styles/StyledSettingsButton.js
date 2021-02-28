@@ -10,4 +10,7 @@ export const StyledSettingsButton = styled.button`
   width: 50%;
   cursor: pointer;
   outline: none;
+  :hover {
+    opacity: 0.7
+  }
 `

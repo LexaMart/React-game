@@ -14,4 +14,7 @@ export const StyledScoreButton = styled.button`
   font-size: 1rem;
   outline: none;
   cursor: pointer;
+  :hover {
+    opacity: 0.7
+  }
 `
