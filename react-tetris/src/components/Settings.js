@@ -3,10 +3,10 @@ import { StyledShadow, StyledSettings, StyledButtonsHandler } from './styles/Sty
 import { localDropTime } from '../localStorage'
 
 
-const Settings = ({ active, setActive, isMusic, setIsMusic, difficulty }) => {
+const Settings = ({ active, setActive, isMusic, setIsMusic, difficulty, crazyMode, setCrazyMode }) => {
 
-  const activeButton = {'background-color': '#505050', 'color': 'white'}
-  const[currentDroptime, setCurrentDropTime] = useState(localStorage.getItem('DropTime'));
+  const activeButton = { 'backgroundColor': '#505050', 'color': 'white' }
+  const [currentDroptime, setCurrentDropTime] = useState(localStorage.getItem('DropTime'));
 
   const musicHandler = () => {
     setIsMusic(!isMusic);
@@ -27,6 +27,7 @@ const Settings = ({ active, setActive, isMusic, setIsMusic, difficulty }) => {
       <StyledSettings className='settings' style={active ? { left: 0 } : { left: -8000 }}>
         <StyledButtonsHandler>
           <button className='music-button' onClick={musicHandler}>Music {isMusic ? 'OFF' : 'ON'}</button>
+          <hr style={{ 'width': '100%' }} />
           <button type='button' className='mode-button' onClick={() => difficultyHandler('100000')} style={
             currentDroptime === '100000' ? activeButton : {}
           } >
@@ -42,6 +43,10 @@ const Settings = ({ active, setActive, isMusic, setIsMusic, difficulty }) => {
           } >
             Hard
           </button>
+          <hr style={{ 'width': '100%' }} />
+          <button onClick={() => setCrazyMode(!crazyMode)} style={
+            crazyMode ? activeButton : {}
+          } >CRAZY MODE</button>
         </StyledButtonsHandler>
       </StyledSettings>
     </>

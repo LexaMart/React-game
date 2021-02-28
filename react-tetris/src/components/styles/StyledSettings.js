@@ -39,3 +39,6 @@ export const StyledButtonsHandler = styled.div`
   height: 50%;
   justify-content: center;
 `
+export const StyledHeightHandler = styled.div`
+display: flex;
+`

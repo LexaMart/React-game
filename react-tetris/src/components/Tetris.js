@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { createStage, checkCollision } from '../gameHelpers';
-import { localDropTime } from '../localStorage';
+import { localDropTime, localScore } from '../localStorage';
 import { StyledTetrisWrapper, StyledTetris, StyledAdditionalButtons } from './styles/StyledTetris';
 
 // Custom Hooks
@@ -17,19 +17,29 @@ import StartButton from './StartButton';
 import ScoreButton from './ScoreButton';
 import SettingsButton from './SettingsButton';
 import Settings from './Settings';
+import Score from './Score';
+import FullScreen from './FullScreen';
+import Footer from './Footer';
+
+//Audio
+import gameOverSound from '../sounds/game-over.mp3';
+import moveSound from '../sounds/move.mp3';
 
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
-
+  const [isMusic, setIsMusic] = useState(true);
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
+  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, isMusic);
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
     rowsCleared
   );
   const [activeSettings, setActiveSettings] = useState(false);
+  const [activeScore, setActiveScore] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
-  const [isMusic, setIsMusic] = useState(true);
+  const [crazyMode, setCrazyMode] = useState(false);
+  const [fullscr, setFullscr] = useState(false);
+
 
 
   const movePlayer = dir => {
@@ -45,6 +55,9 @@ const Tetris = () => {
       }
     }
   };
+  const showScore = () => {
+    setActiveScore(!activeScore);
+  }
 
   const showSettings = () => {
     setActiveSettings(!activeSettings);
@@ -59,20 +72,33 @@ const Tetris = () => {
     setLevel(0);
     setRows(0);
     setGameOver(false);
+    createStage();
   };
+
+  const playSound = (soundPath) => {
+    if (isMusic) {
+      const audio = new Audio(soundPath);
+      audio.play();
+    }
+  }
+
 
   const drop = () => {
     if (rows > (level + 1) * 10) {
       setLevel(prev => prev + 1);
       setDropTime(localDropTime() / (level + 1) + 200);
-      console.log(dropTime);
     }
 
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
       if (player.pos.y < 1) {
+        if (rows !== 0) {
+          localScore(score, rows);
+        }
         console.log('GAME OVER!!!');
+        playSound(gameOverSound)
+        console.log(typeof (score));
         setGameOver(true);
         setDropTime(null);
       }
@@ -91,29 +117,52 @@ const Tetris = () => {
 
   const move = ({ keyCode }) => {
     if (!gameOver) {
-      if (keyCode === 37) {
-        movePlayer(-1);
-      } else if (keyCode === 39) {
-        movePlayer(1);
-      } else if (keyCode === 40) {
-        dropPlayer();
-      } else if (keyCode === 38) {
-        playerRotate(stage, 1);
+      if (!crazyMode) {
+        playSound(moveSound);
+        if (keyCode === 37) {
+          movePlayer(-1);
+        } else if (keyCode === 39) {
+          movePlayer(1);
+        } else if (keyCode === 40) {
+          dropPlayer();
+        } else if (keyCode === 38) {
+          playerRotate(stage, 1);
+        }
+      } else {
+        playSound(moveSound);
+        if (keyCode === 37) {
+          movePlayer(1);
+        } else if (keyCode === 39) {
+          movePlayer(-1);
+        } else if (keyCode === 40) {
+          dropPlayer();
+        } else if (keyCode === 38) {
+          playerRotate(stage, 1);
+        }
       }
     }
   };
+  const openFull = () => {
+    if(!fullscr) {
+      document.querySelector('.fullscr').requestFullscreen();
+    } 
+  }
 
   return (
+    <>
     <StyledTetrisWrapper
       role="button"
       tabIndex="0"
       onKeyDown={e => move(e)}
       onKeyUp={keyUp}
     >
-      <Settings active={activeSettings} setActive={setActiveSettings} isMusic={isMusic} setIsMusic={setIsMusic} difficulty={localDropTime()} />
-      <StyledTetris>
+      <Settings active={activeSettings} setActive={setActiveSettings} isMusic={isMusic} setIsMusic={setIsMusic} difficulty={localDropTime()}
+        crazyMode={crazyMode} setCrazyMode={setCrazyMode} />
+      <Score active={activeScore} setActive={setActiveScore} />
+      <StyledTetris className='fullscr'>
         <Stage stage={stage} />
         <aside>
+          <FullScreen callback={openFull} />
           {gameOver ? (
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
@@ -124,7 +173,7 @@ const Tetris = () => {
               </div>
             )}
           <StyledAdditionalButtons>
-            <ScoreButton />
+            <ScoreButton callback={showScore} />
             <SettingsButton callback={showSettings} />
           </StyledAdditionalButtons>
 
@@ -132,6 +181,8 @@ const Tetris = () => {
         </aside>
       </StyledTetris>
     </StyledTetrisWrapper>
+    <Footer />
+    </>
   );
 };
 

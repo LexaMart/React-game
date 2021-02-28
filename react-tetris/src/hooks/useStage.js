@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
 
-export const useStage = (player, resetPlayer) => {
+import rowClear from '../sounds/row-clear.mp3';
+
+export const useStage = (player, resetPlayer, isMusic) => {
   const [stage, setStage] = useState(createStage());
   const [rowsCleared, setRowsCleared] = useState(0);
 
@@ -10,6 +12,10 @@ export const useStage = (player, resetPlayer) => {
     const sweepRows = newStage =>
       newStage.reduce((ack, row) => {
         if (row.findIndex(cell => cell[0] === 0) === -1) {
+          if (isMusic) {
+            const audio = new Audio(rowClear);
+            audio.play();
+          }
           setRowsCleared(prev => prev + 1);
           ack.unshift(new Array(newStage[0].length).fill([0, 'clear']));
           return ack;
@@ -47,6 +53,7 @@ export const useStage = (player, resetPlayer) => {
     player.pos.y,
     player.tetromino,
     resetPlayer,
+    isMusic,
   ]);
 
   return [stage, setStage, rowsCleared];
