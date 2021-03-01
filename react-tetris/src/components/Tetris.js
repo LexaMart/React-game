@@ -39,6 +39,7 @@ const Tetris = () => {
   const [isStarted, setIsStarted] = useState(false);
   const [crazyMode, setCrazyMode] = useState(false);
   const [fullscr, setFullscr] = useState(false);
+  const [volume, setVolume] = useState(1);
 
 
 
@@ -76,8 +77,9 @@ const Tetris = () => {
   };
 
   const playSound = (soundPath) => {
-    if (isMusic) {
+    if (isMusic && isStarted) {
       const audio = new Audio(soundPath);
+      audio.volume = volume;
       audio.play();
     }
   }
@@ -143,45 +145,46 @@ const Tetris = () => {
     }
   };
   const openFull = () => {
-    if(!fullscr) {
+    if (!fullscr) {
       document.querySelector('.fullscr').requestFullscreen();
-    } 
+    }
   }
 
   return (
     <>
-    <StyledTetrisWrapper
-      role="button"
-      tabIndex="0"
-      onKeyDown={e => move(e)}
-      onKeyUp={keyUp}
-    >
-      <Settings active={activeSettings} setActive={setActiveSettings} isMusic={isMusic} setIsMusic={setIsMusic} difficulty={localDropTime()}
+      <StyledTetrisWrapper
+        role="button"
+        tabIndex="0"
+        onKeyDown={e => move(e)}
+        onKeyUp={keyUp}
+      >
+        <Settings active={activeSettings} setActive={setActiveSettings} isMusic={isMusic} setIsMusic={setIsMusic} difficulty={localDropTime()}
+          volume={volume} setVolume={setVolume}
         crazyMode={crazyMode} setCrazyMode={setCrazyMode} />
       <Score active={activeScore} setActive={setActiveScore} />
-      <StyledTetris className='fullscr'>
-        <Stage stage={stage} />
-        <aside>
-          <FullScreen callback={openFull} />
-          {gameOver ? (
-            <Display gameOver={gameOver} text="Game Over" />
-          ) : (
-              <div>
-                <Display text={`Score: ${score}`} />
-                <Display text={`rows: ${rows}`} />
-                <Display text={`Level: ${level}`} />
-              </div>
-            )}
-          <StyledAdditionalButtons>
-            <ScoreButton callback={showScore} />
-            <SettingsButton callback={showSettings} />
-          </StyledAdditionalButtons>
+        <StyledTetris className='fullscr'>
+          <Stage stage={stage} />
+          <aside>
+            <FullScreen callback={openFull} />
+            {gameOver ? (
+              <Display gameOver={gameOver} text="Game Over" />
+            ) : (
+                <div>
+                  <Display text={`Score: ${score}`} />
+                  <Display text={`rows: ${rows}`} />
+                  <Display text={`Level: ${level}`} />
+                </div>
+              )}
+            <StyledAdditionalButtons>
+              <ScoreButton callback={showScore} />
+              <SettingsButton callback={showSettings} />
+            </StyledAdditionalButtons>
 
-          <StartButton callback={startGame} gameStarted={isStarted} />
-        </aside>
-      </StyledTetris>
-    </StyledTetrisWrapper>
-    <Footer />
+            <StartButton callback={startGame} gameStarted={isStarted} />
+          </aside>
+        </StyledTetris>
+      </StyledTetrisWrapper>
+      <Footer />
     </>
   );
 };
