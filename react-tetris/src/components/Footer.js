@@ -29,7 +29,7 @@ const Footer = () => {
         }
       >LexaMart's GIT
       </StyledGit>
-    <StyledYoutubeLink href='/' style={
+    <StyledYoutubeLink href='https://youtu.be/OobvqJDOkUY' style={
       {'color': '#dc5454', 'textDecoration': 'none'}
     }>
       YouTube
