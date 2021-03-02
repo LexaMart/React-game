@@ -41,7 +41,7 @@ const Settings = ({ active, setActive, isMusic, setIsMusic, volume, setVolume,
           <div style={{
                 'display': 'flex',
                 'justifycontent': 'center',
-                'alignitems': 'center',
+                'alignItems': 'center',
           }}>
             <StyledVolume onClick={() => volumeHandler('+')}>Volume +</StyledVolume>
             <span style={{'fontfamily': 'Pixel, Arial, Helvetica, sans-serif'}}>{volumeConvert()}</span>
