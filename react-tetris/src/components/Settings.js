@@ -44,7 +44,7 @@ const Settings = ({ active, setActive, isMusic, setIsMusic, volume, setVolume,
                 'align-items': 'center',
           }}>
             <button onClick={() => volumeHandler('+')}>Volume +</button>
-            <span>{volumeConvert()}</span>
+            <span style={{'font-family': 'Pixel, Arial, Helvetica, sans-serif'}}>{volumeConvert()}</span>
             <button onClick={() => volumeHandler('-')}>Volume -</button>
           </div>
           <hr style={{ 'width': '100%' }} />

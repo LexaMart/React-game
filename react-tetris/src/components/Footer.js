@@ -20,6 +20,14 @@ const Footer = () => {
         }
       } />
     </a>
+    <a href='https://github.com/LexaMart' style={
+        {
+          'textDecoration': 'none',
+          'color': 'white',
+          'font-family': 'Pixel, Arial, Helvetica, sans-serif'
+          }
+        }
+      >LexaMart's GIT</a>
     <StyledYoutubeLink href='/' style={
       {'color': '#dc5454', 'textDecoration': 'none'}
     }>
