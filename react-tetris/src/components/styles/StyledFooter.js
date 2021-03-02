@@ -15,3 +15,9 @@ font-family: Pixel, Arial, Helvetica, sans-serif;
 export const StyledYear = styled.span`
   font-family: Pixel, Arial, Helvetica, sans-serif;
 `
+
+export const StyledGit = styled.a`
+ :hover {
+   opacity: 0.7;
+ }
+`

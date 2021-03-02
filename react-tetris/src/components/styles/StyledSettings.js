@@ -28,6 +28,9 @@ button {
   border: none;
   outline: none;
   cursor: pointer;
+  :hover {
+    opacity: 0.7;
+  }
 }
 
 `
@@ -41,4 +44,10 @@ export const StyledButtonsHandler = styled.div`
 `
 export const StyledHeightHandler = styled.div`
 display: flex;
+`
+
+export const StyledVolume = styled.button`
+:hover {
+  opacity: 0.7;
+}
 `
