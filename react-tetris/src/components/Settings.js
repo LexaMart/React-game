@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyledShadow, StyledSettings, StyledButtonsHandler } from './styles/StyledSettings';
+import { StyledShadow, StyledSettings, StyledButtonsHandler, StyledVolume } from './styles/StyledSettings';
 import { localDropTime } from '../localStorage'
 
 
@@ -40,12 +40,12 @@ const Settings = ({ active, setActive, isMusic, setIsMusic, volume, setVolume,
           <button className='music-button' onClick={musicHandler}>Music {isMusic ? 'OFF' : 'ON'}</button>
           <div style={{
                 'display': 'flex',
-                'justify-content': 'center',
-                'align-items': 'center',
+                'justifycontent': 'center',
+                'alignitems': 'center',
           }}>
-            <button onClick={() => volumeHandler('+')}>Volume +</button>
-            <span style={{'font-family': 'Pixel, Arial, Helvetica, sans-serif'}}>{volumeConvert()}</span>
-            <button onClick={() => volumeHandler('-')}>Volume -</button>
+            <StyledVolume onClick={() => volumeHandler('+')}>Volume +</StyledVolume>
+            <span style={{'fontfamily': 'Pixel, Arial, Helvetica, sans-serif'}}>{volumeConvert()}</span>
+            <StyledVolume onClick={() => volumeHandler('-')}>Volume <br />-</StyledVolume>
           </div>
           <hr style={{ 'width': '100%' }} />
           <button type='button' className='mode-button' onClick={() => difficultyHandler('100000')} style={

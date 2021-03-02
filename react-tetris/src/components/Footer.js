@@ -2,7 +2,7 @@ import React from 'react';
 
 import rsLogo from '../img/rs_school_js.svg';
 
-import { StyledRsLogo, StyledYoutubeLink, StyledYear } from './styles/StyledFooter'
+import { StyledRsLogo, StyledYoutubeLink, StyledYear, StyledGit } from './styles/StyledFooter'
 
 const Footer = () => {
   return (
@@ -20,14 +20,15 @@ const Footer = () => {
         }
       } />
     </a>
-    <a href='https://github.com/LexaMart' style={
+    <StyledGit href='https://github.com/LexaMart' style={
         {
           'textDecoration': 'none',
           'color': 'white',
-          'font-family': 'Pixel, Arial, Helvetica, sans-serif'
+          'fontfamily': 'Pixel, Arial, Helvetica, sans-serif'
           }
         }
-      >LexaMart's GIT</a>
+      >LexaMart's GIT
+      </StyledGit>
     <StyledYoutubeLink href='/' style={
       {'color': '#dc5454', 'textDecoration': 'none'}
     }>
